@@ -205,3 +205,8 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Large data files
+data/processed/hdfs_cleaned.csv
+data/processed/hdfs_structured.csv
+data/features/features.csv

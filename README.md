@@ -13,6 +13,31 @@ To design a SIEM-inspired system capable of:
 ## Proposed Architecture
 Application → Streaming Engine → Feature Processing → ML Model → Alert System
 
+## Folder Responsibilities
+- `parser/` reads raw logs, extracts structured fields, classifies event types, and returns structured data.
+- `feature_engineering/` generates numerical features from structured logs.
+- `detection/` trains and runs anomaly detection models such as Isolation Forest and Autoencoders.
+- `optimization/` implements Genetic Algorithm workflows for feature selection, threshold tuning, and hyperparameter optimization.
+- `dashboard/` visualizes logs, anomalies, model performance, and alerts.
+
+## HDFS Feature Pipeline
+Build the Sprint 2 datasets from the raw HDFS log:
+
+```bash
+python3 scripts/build_hdfs_features.py
+```
+
+This writes:
+- `data/processed/hdfs_structured.csv`
+- `data/processed/hdfs_cleaned.csv`
+- `data/features/features.csv`
+
+For a quick smoke test, limit the number of parsed raw log lines:
+
+```bash
+python3 scripts/build_hdfs_features.py --limit 1000
+```
+
 ## Technologies
 - Python
 - Django
