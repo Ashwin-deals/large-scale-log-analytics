@@ -27,6 +27,23 @@ Application → Streaming Engine → Feature Processing → ML Model → Alert S
 ## Project Status
 Phase 1: Architecture Design & Tool Selection
 
+## Auth API (login/register)
+A minimal Flask + MongoDB service backs the frontend login page.
+
+```bash
+python -m venv venv && source venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env   # set MONGO_URI / JWT_SECRET as needed
+python app.py           # runs on http://localhost:5000
+```
+
+Requires a running MongoDB instance (local or Atlas) reachable at `MONGO_URI`. Passwords are hashed with bcrypt before storage — plaintext passwords are never persisted.
+
+Endpoints:
+- `POST /api/auth/register` — `{ email, password, name }`
+- `POST /api/auth/login` — `{ email, password }`
+- `GET /api/health`
+
 ## Team Members
 Akilan J [CB.SC.U4CSE23002]
 Ashwin V [CB.SC.U4CSE23009]
