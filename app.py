@@ -14,7 +14,8 @@ from pymongo.errors import DuplicateKeyError
 load_dotenv()
 
 MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
-MONGO_DB = os.getenv("MONGO_DB", "evolve")
+MONGO_DB = os.getenv("MONGO_DB", "users")
+MONGO_COLLECTION = os.getenv("MONGO_COLLECTION", "user_details")
 JWT_SECRET = os.getenv("JWT_SECRET", "change-this-secret")
 CORS_ORIGIN = os.getenv("CORS_ORIGIN", "http://localhost:3000")
 JWT_TTL_HOURS = 24
@@ -28,8 +29,8 @@ CORS(app, origins=[CORS_ORIGIN])
 # Python has no system root certificates installed (common on macOS).
 client = MongoClient(MONGO_URI, tlsCAFile=certifi.where())
 db = client[MONGO_DB]
-users = db.users
-users.create_index("email", unique=True)
+user_details = db[MONGO_COLLECTION]
+user_details.create_index("email", unique=True)
 
 
 def make_token(user_id, email):
@@ -56,7 +57,7 @@ def register():
     password_hash = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
 
     try:
-        result = users.insert_one({
+        result = user_details.insert_one({
             "email": email,
             "name": name,
             "password_hash": password_hash,
@@ -75,7 +76,7 @@ def login():
     email = (data.get("email") or "").strip().lower()
     password = data.get("password") or ""
 
-    user = users.find_one({"email": email})
+    user = user_details.find_one({"email": email})
     if not user or not bcrypt.checkpw(password.encode("utf-8"), user["password_hash"]):
         return jsonify({"error": "Invalid email or password."}), 401
 
