@@ -3,6 +3,7 @@ import re
 from datetime import datetime, timedelta, timezone
 
 import bcrypt
+import certifi
 import jwt
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request
@@ -23,7 +24,9 @@ EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 app = Flask(__name__)
 CORS(app, origins=[CORS_ORIGIN])
 
-client = MongoClient(MONGO_URI)
+# tlsCAFile pins certifi's bundle so Atlas connections work on machines whose
+# Python has no system root certificates installed (common on macOS).
+client = MongoClient(MONGO_URI, tlsCAFile=certifi.where())
 db = client[MONGO_DB]
 users = db.users
 users.create_index("email", unique=True)
