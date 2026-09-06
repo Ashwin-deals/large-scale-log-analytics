@@ -61,11 +61,6 @@ class HDFSFeatureExtractor:
         event["source_ip_encoded"] = self._encode_categories(prepared["source_ip"])
         event["destination_ip_encoded"] = self._encode_categories(prepared["destination_ip"])
 
-        # Collapse per-event rows to one row per block_id: "first" uses the
-        # chronologically earliest event (frame is sorted by datetime above),
-        # "max" treats is_error/block_size as block-wide properties, and the
-        # encoded categorical columns take the most common value observed for
-        # that block (ties broken toward the smallest encoded value).
         grouped = event.groupby("block_id", sort=False)
         aggregated = grouped.agg(
             hour_of_day=("hour_of_day", "first"),

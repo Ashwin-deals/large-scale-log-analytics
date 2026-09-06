@@ -25,12 +25,6 @@ from optimization.ga_isolation_forest import (
     stratified_subsample,
 )
 
-# Sized from an empirical timing check (see task notes): scoring one
-# chromosome on a 40k-row stratified subsample took ~0.2-1.2s depending on
-# n_estimators/max_samples. population_size(16) x (num_generations(12) + 1
-# initial generation) ~= 208 fitness evaluations, projected at well under 5
-# minutes total -- modest enough to run inline, generous enough to let the
-# GA actually explore the search space.
 FITNESS_SAMPLE_SIZE = 40_000
 POPULATION_SIZE = 16
 NUM_GENERATIONS = 12
@@ -85,7 +79,7 @@ def main() -> None:
     print("\nRetraining final candidate on the full dataset with the best chromosome...")
     selected_features = best.selected_features
     model = build_model(best)
-    model.fit(merged[selected_features])  # unsupervised: no labels passed to fit()
+    model.fit(merged[selected_features])
 
     V2_MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
     joblib.dump(model, V2_MODEL_PATH)

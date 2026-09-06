@@ -172,8 +172,6 @@ def evaluate_and_promote(
         shutil.copy2(candidate_model_path, archived_path)
 
         if not current_version_path.exists():
-            # First-ever evaluation and nothing was promoted: still record
-            # what's live so current_version.json is meaningful from the start.
             _write_current_version(
                 current_version_path,
                 version=current_version,

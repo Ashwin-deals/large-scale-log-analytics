@@ -35,7 +35,7 @@ class ModelEvolutionTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             paths = self._build_paths(directory)
             self._write_metrics(paths["current_metrics"], f1=0.70)
-            self._write_metrics(paths["candidate_metrics"], f1=0.70)  # equal: not strictly better
+            self._write_metrics(paths["candidate_metrics"], f1=0.70)
             self._write_model(paths["current_model"])
             self._write_model(paths["candidate_model"])
 
@@ -59,10 +59,10 @@ class ModelEvolutionTest(unittest.TestCase):
 
             self._write_metrics(paths["current_metrics"], f1=0.20)
             self._write_metrics(paths["candidate_metrics"], f1=0.70)
-            self._evaluate_and_promote(paths)  # promotes: current becomes v2
+            self._evaluate_and_promote(paths)
 
             self._write_metrics(paths["candidate_metrics"], f1=0.10)
-            self._evaluate_and_promote(paths)  # candidate worse than new current: rejected
+            self._evaluate_and_promote(paths)
 
             history = self._read_history(paths["version_history_path"])
             self.assertEqual(len(history), 2)

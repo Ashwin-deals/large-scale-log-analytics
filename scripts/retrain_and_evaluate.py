@@ -34,8 +34,6 @@ from optimization.model_evolution import DEFAULT_CURRENT_VERSION_PATH, evaluate_
 
 DATA_SLICE_CHOICES = ("all", "early", "late")
 
-# See scripts/optimize_isolation_forest_ga.py for how these were sized
-# (timed single fitness evaluations before committing to a population size).
 FITNESS_SAMPLE_SIZE = 40_000
 POPULATION_SIZE = 16
 NUM_GENERATIONS = 12
@@ -113,7 +111,7 @@ def train_candidate(train_data, eval_data) -> dict:
     print(f"Best chromosome: {best.as_readable_dict()}")
 
     model = build_model(best)
-    model.fit(train_data[selected_features])  # unsupervised: no labels passed to fit()
+    model.fit(train_data[selected_features])
 
     CANDIDATE_MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
     joblib.dump(model, CANDIDATE_MODEL_PATH)

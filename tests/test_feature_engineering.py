@@ -110,8 +110,6 @@ class HDFSFeatureExtractorTest(unittest.TestCase):
                 all(pd.api.types.is_numeric_dtype(features[column]) for column in features)
             )
 
-            # One row per block_id: the fixture has 2 events for
-            # blk_-1608999687919862906 and 1 event for blk_7503483334202473044.
             self.assertEqual(len(features), 2)
             self.assertEqual(features.loc[0, "hour_of_day"], 20)
             self.assertEqual(features.loc[0, "is_error"], 1)

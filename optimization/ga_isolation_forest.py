@@ -127,7 +127,7 @@ def score_chromosome(chromosome: Chromosome, X: pd.DataFrame, y: pd.Series) -> f
     exactly what gets reported and compared.
     """
     if sum(chromosome.feature_mask) == 0:
-        return 0.0  # an empty feature set can't train a model; discourage it
+        return 0.0
 
     selected = chromosome.selected_features
     model = build_model(chromosome)

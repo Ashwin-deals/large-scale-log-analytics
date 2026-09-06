@@ -6,5 +6,4 @@ class DjangoParser(BaseParser):
         """
         Parses a Django log file and returns a pandas DataFrame.
         """
-        # TODO: Implement Django parsing logic
         return pd.DataFrame()

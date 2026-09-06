@@ -6,7 +6,6 @@ from detection.isolation_forest import TRAINING_FEATURE_COLUMNS
 
 DEFAULT_PREDICTIONS_PATH = Path("data/predictions/isolation_forest_v1_predictions.csv")
 
-# IsolationForest.predict returns 1 for inliers and -1 for outliers.
 RAW_PREDICTION_LABELS = {1: "Normal", -1: "Anomaly"}
 
 
@@ -24,8 +23,6 @@ def predict(
     """
     inference_matrix = merged[feature_columns]
     raw_predictions = model.predict(inference_matrix)
-    # decision_function: higher = more normal. Negate so a higher
-    # anomaly_score means more anomalous, which reads more naturally.
     anomaly_scores = -model.decision_function(inference_matrix)
 
     predictions = pd.DataFrame(

@@ -2,8 +2,6 @@ from sklearn.ensemble import IsolationForest
 
 from feature_engineering.feature_extractor import FEATURE_COLUMNS
 
-# is_error is zero-variance in the current dataset (no ERROR-level log
-# lines exist), so it carries no signal for the model and is excluded here.
 EXCLUDED_FEATURE_COLUMNS = ["is_error"]
 TRAINING_FEATURE_COLUMNS = [
     column for column in FEATURE_COLUMNS if column not in EXCLUDED_FEATURE_COLUMNS
