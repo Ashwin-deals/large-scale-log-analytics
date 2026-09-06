@@ -120,4 +120,8 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 
-*.csv
+data/processed/hdfs_cleaned.csv
+data/processed/hdfs_structured.csv
+data/processed/block_metadata.csv
+data/processed/dataset_stats.json
+data/features/features.csv
