@@ -109,11 +109,31 @@ class HDFSFeatureExtractorTest(unittest.TestCase):
             self.assertTrue(
                 all(pd.api.types.is_numeric_dtype(features[column]) for column in features)
             )
+
+            # One row per block_id: the fixture has 2 events for
+            # blk_-1608999687919862906 and 1 event for blk_7503483334202473044.
+            self.assertEqual(len(features), 2)
             self.assertEqual(features.loc[0, "hour_of_day"], 20)
-            self.assertEqual(features.loc[1, "is_error"], 1)
+            self.assertEqual(features.loc[0, "is_error"], 1)
             self.assertEqual(features.loc[0, "event_frequency"], 2)
-            self.assertEqual(features.loc[1, "event_frequency"], 2)
-            self.assertEqual(features.loc[2, "event_frequency"], 1)
+            self.assertEqual(features.loc[1, "hour_of_day"], 21)
+            self.assertEqual(features.loc[1, "is_error"], 0)
+            self.assertEqual(features.loc[1, "event_frequency"], 1)
+
+    def test_extractor_writes_one_row_per_block_id_with_no_duplicates(self):
+        with tempfile.TemporaryDirectory() as directory:
+            output_path = Path(directory) / "features.csv"
+            HDFSFeatureExtractor().extract(self._cleaned_logs(), output_path)
+
+            on_disk = pd.read_csv(output_path)
+
+            self.assertEqual(list(on_disk.columns)[0], "block_id")
+            self.assertEqual(list(on_disk.columns)[1:], FEATURE_COLUMNS)
+            self.assertFalse(on_disk["block_id"].duplicated().any())
+            self.assertEqual(
+                sorted(on_disk["block_id"]),
+                sorted(self._cleaned_logs()["block_id"].unique()),
+            )
 
     def _cleaned_logs(self):
         return pd.DataFrame(

@@ -4,3 +4,7 @@ pymongo==4.8.0
 bcrypt==4.2.0
 PyJWT==2.9.0
 python-dotenv==1.0.1
+pandas==2.3.0
+scikit-learn==1.8.0
+joblib==1.5.3
+pygad==3.7.0
